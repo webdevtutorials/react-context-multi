@@ -1,10 +1,10 @@
-import { useEffect, useContext } from "react";
-import { Context1 } from "./Context1";
-import { Context2 } from "./Context2";
+import { useEffect } from "react";
+import { useContext1 } from "./Context1";
+import { useContext2 } from "./Context2";
 
 export default function Consumer() {
-  const [data1, setData1] = useContext(Context1);
-  const [data2, setData2] = useContext(Context2);
+  const [data1, setData1] = useContext1();
+  const [data2, setData2] = useContext1();
 
   useEffect(() => {
     setData1("Data-1");
