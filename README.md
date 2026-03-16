@@ -39,68 +39,47 @@ git branch -m master main
 ```bash
 gh auth status
 gh repo create react-context-multi --public --source=. --remote=origin --push
+git remote -v
 ```
 
 ## Create multiple contexts, providers, and hooks. In the providers add data to share:
 
 ```js
-// src / Context1
+// src / Data1Context and src / Data2Context
 import { useState, useMemo, createContext, useContext } from "react";
 
-const Context1 = createContext(undefined);
+const DataContext = createContext(undefined);
 
-function Provider1({ children }) {
-  const [data1, setData1] = useState("No data-1");
-  const value = useMemo(() => [data1, setData1], [data1, setData1]);
+function DataProvider({ children }) {
+  const [data, setData] = useState("No data");
+  const value = useMemo(() => [data, setData], [data, setData]);
 
-  return <Context1.Provider value={value}>{children}</Context1.Provider>;
+  return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
 
-function useContext1() {
-  const context = useContext(Context1);
+function useData() {
+  const context = useContext(DataContext);
   if (context === undefined)
-    throw new Error("useContext1 must be used withing Provider1");
+    throw new Error("useData must be used within DataProvider");
 
   return context;
 }
 
-export { Context1, useContext1, Provider1 };
-
-// src / Context2
-import { useState, useMemo, createContext, useContext } from "react";
-
-const Context2 = createContext();
-
-function Provider2({ children }) {
-  const [data2, setData2] = useState("No data-2");
-  const value = useMemo(() => [data2, setData2], [data2, setData2]);
-
-  return <Context2.Provider value={value}>{children}</Context2.Provider>;
-}
-
-function useContext2() {
-  const context = useContext(Context2);
-  if (context === undefined)
-    throw new Error("useContext2 must be used within Provider2");
-
-  return context;
-}
-
-export { Context2, useContext2, Provider2 };
+export { useData, DataProvider };
 ```
 
 ## Consolidate multiple providers
 
 ```js
 // src / AppProviders.jsx
-import { Provider1 } from "./Context1";
-import { Provider2 } from "./Context2";
+import { DataProvider as Data1Provider } from "./Data1Context";
+import { DataProvider as Data2Provider } from "./Data2Context";
 
 export function AppProviders({ children }) {
   return (
-    <Provider1>
-      <Provider2>{children}</Provider2>
-    </Provider1>
+    <Data1Provider>
+      <Data2Provider>{children}</Data2Provider>
+    </Data1Provider>
   );
 }
 ```
@@ -128,12 +107,12 @@ createRoot(document.getElementById("root")).render(
 
 ```js
 import { useEffect } from "react";
-import { useContext1 } from "./Context1";
-import { useContext2 } from "./Context2";
+import { useData as useData1 } from "./Data1Context";
+import { useData as useData2 } from "./Data2Context";
 
-export default function Consumer() {
-  const [data1, setData1] = useContext1();
-  const [data2, setData2] = useContext1();
+export default function MyComponent() {
+  const [data1, setData1] = useData1();
+  const [data2, setData2] = useData2();
 
   useEffect(() => {
     setData1("Data-1");
@@ -142,7 +121,7 @@ export default function Consumer() {
 
   return (
     <>
-      <h2>Consumer</h2>
+      <h2>My Component</h2>
       <p>{data1}</p>
       <p>{data2}</p>
     </>
@@ -155,8 +134,8 @@ export default function Consumer() {
 ```js
 // src / App.jsx
 ...
-import Consumer from "./Consumer";
+import MyComponent from "./MyComponent";
 ...
-<Consumer />
+<MyComponent />
 ...
 ```

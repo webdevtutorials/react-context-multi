@@ -1,10 +1,12 @@
-import { Provider1 } from "./Context1";
-import { Provider2 } from "./Context2";
+// src / AppProviders.jsx
+
+import { DataProvider as Data1Provider } from "./Data1Context";
+import { DataProvider as Data2Provider } from "./Data2Context";
 
 export function AppProviders({ children }) {
   return (
-    <Provider1>
-      <Provider2>{children}</Provider2>
-    </Provider1>
+    <Data1Provider>
+      <Data2Provider>{children}</Data2Provider>
+    </Data1Provider>
   );
 }
