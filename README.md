@@ -68,7 +68,7 @@ function useData() {
 export { useData, DataProvider };
 ```
 
-## Consolidate multiple providers
+## Consolidate the multiple providers
 
 ```js
 // src / AppProviders.jsx
@@ -84,7 +84,7 @@ export function AppProviders({ children }) {
 }
 ```
 
-## Wrap consumers
+## Wrap the consumers
 
 ```js
 // src / main.jsx
@@ -103,7 +103,7 @@ createRoot(document.getElementById("root")).render(
 );
 ```
 
-## Create consumer and access the data
+## Create a component and access the data
 
 ```js
 import { useEffect } from "react";
@@ -129,7 +129,7 @@ export default function MyComponent() {
 }
 ```
 
-## Integrate the consumer in the app
+## Integrate the component in the app
 
 ```js
 // src / App.jsx
